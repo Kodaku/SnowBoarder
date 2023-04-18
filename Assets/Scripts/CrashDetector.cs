@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class CrashDetector : MonoBehaviour
 {
     [SerializeField] ParticleSystem crashEffect;
+    [SerializeField] AudioClip crashSFX;
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Ground") {
             crashEffect.Play();
@@ -16,6 +17,8 @@ public class CrashDetector : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Rock") {
             crashEffect.Play();
+            FindObjectOfType<PlayerController>().DisableControl();
+            GetComponent<AudioSource>().PlayOneShot(crashSFX);
             Invoke("ReloadScene", 0.2f);
         }
     }
